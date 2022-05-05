@@ -6,24 +6,74 @@ import "./productdetail.css";
 import { withAlert } from 'react-alert'
 const ProductDetails =  ()=> {    
 	const [stdData,setStdData] = React.useState([]);
+	const [stdclass,setClassData] = React.useState([]);
     var PID=localStorage.getItem('PID');
+	var SID=localStorage.getItem('SID');
     const data={Product_ID:PID};
-    const [isChecked, setIsChecked] = useState(false);
+	const classdata={Student_ID:SID};
+    const [isChecked, setIsChecked] = useState([]);
 	const fetchData = React.useCallback(() => {
 		axios.post('https://tportal-server.herokuapp.com/ProductDetails',data).then((res)=>{
-			console.log(res);
+			
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
+	const fetchclass = React.useCallback(() => {
+		axios.post('https://tportal-server.herokuapp.com/extractclass',classdata).then((res)=>{
+			
+			setClassData(res.data);
+			
+		}).catch(err => console.log(err));
+	},[])
 
-    function handleOnChangeCheck(){
-        setIsChecked(!isChecked);
-        isChecked?alert('Updated Successfully'):alert('Updated Successfully')
+    const handleOnChangeCheck=async(Clas,stat)=>{
+		var st;
+		if(stdclass.find(({ Student_ID }) => Student_ID === SID)){
+			console.log("dddds");
+		}
+		st=stat;
+		
+		const datatosend={
+			"Product_ID":PID,
+			"Student_ID":SID,
+			"Class_ID":Clas,
+			"Date_Time":new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString() ,
+			"status":st.toString()
+		}
+		console.log(datatosend);
+			try {
+				const url = "https://tportal-server.herokuapp.com/updateDetails";
+				const { datatosend: res } = await axios.post(url, datatosend);
+				//window.location = "/"
+				console.log(datatosend);
+				if(st===false){
+					
+					alert("Deleted Successfully");
+					window.location = "/ProductDetails";
+
+				}
+				if(st===true){
+					
+					alert("Added Successfully");
+					window.location = "/ProductDetails";
+				}
+				
+			} catch (error) {
+			if (
+				error.response &&
+				error.response.status >= 400 &&
+				error.response.status <= 500
+			) {}
+			}
     }
 
   	React.useEffect(()=> {
   		fetchData();
   	},[fetchData])
+	  React.useEffect(()=> {
+		fetchclass();
+	},[fetchclass])
+	console.log(stdclass);
       return(
       <div classname="container">
 		  <nav className={styles.navbar}>
@@ -37,8 +87,8 @@ const ProductDetails =  ()=> {
 						<th>PPT Link</th>
 						<th>Quiz Link</th>
 						<th>Assigment</th>
-                        <th>Quiz Score</th>
-                        <th>Assigment Score</th>
+                        {/* <th>Quiz Score</th>
+                        <th>Assigment Score</th> */}
 						<th>Status</th>
 					</thead>	
                     <tbody>
@@ -66,7 +116,7 @@ const ProductDetails =  ()=> {
 		                    			<td align="Center">
 		                    				{item.Assignment}
 		                    			</td>
-                                        <td align="Center">
+                                        {/* <td align="Center">
                                             <input
                                                 placeholder="Score"
                                                 className="textbox"
@@ -77,11 +127,11 @@ const ProductDetails =  ()=> {
                                                 placeholder="Score"
                                                 className="textbox"
                                             />
-                                        </td>       
+                                        </td>        */}
 										<td align="Center">
                                         <input type="checkbox" 
-                                        checked={isChecked}
-                                        onChange={handleOnChangeCheck}/>
+										checked={stdclass.find(({ Class_ID }) => Class_ID === item.Class_ID)? true:false}
+                                        onChange={()=>handleOnChangeCheck(item.Class_ID,stdclass.find(({ Class_ID }) => Class_ID === item.Class_ID)? false:true)}/>
 										</td>	
 	                    			
 	                    			
