@@ -1,14 +1,12 @@
 import React,{ useState } from "react";
 import axios from "axios";
+import "./StudentDetails.css";
 import styles from "./styles.module.css";
-
 
 const StudentDetails =  ()=> {    
 	const [stdData,setStdData] = React.useState([]);
     var TID=localStorage.getItem('TID');
     const data={Teacher_ID:TID};
-    const [error, setError] = useState("");
-    var ar;
 
 	const fetchData = React.useCallback(() => {
 		axios.post('https://tportal-server.herokuapp.com/StudentDetails',data).then((res)=>{
@@ -16,72 +14,71 @@ const StudentDetails =  ()=> {
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
-
+	function handleClick(proid,sid){
+		localStorage.setItem('PID',proid);
+		localStorage.setItem('SID',sid);
+		console.log(proid);
+		window.location='/ProductDetails';
+	}
 
   	React.useEffect(()=> {
   		fetchData();
   	},[fetchData])
-
-    // const fetchdata = async ()=>{
-    //     try {
-    //           const url = "https://tportal-server.herokuapp.com/StudentDetails";
-    //           const res = await axios.post(url, data);
-    //           //window.location = "/"
-    //           console.log(res.data);
-    //           //return(res);
-              
-    //     } catch (error) {
-    //       if (
-    //         error.response &&
-    //         error.response.status >= 400 &&
-    //         error.response.status <= 500
-    //       ) {
-    //       }
-    //     }
-    // }   
-    // fetchdata();
-    // fetchData()
       return(
-      <div>
-                <table>
+      <div classname="container">
+		  <nav className={styles.navbar}>
+        <h1>Wiingy</h1>
+      </nav>
+	  <br></br>
+                <table className="table table-striped">
+					<thead align="center">
+						<th>Student_ID</th>
+						<th>Name</th>
+						<th>Product_ID</th>
+						<th>Course Name</th>
+						<th>Grade</th>
+						<th>Max Classes</th>
+						<th>Classes Completed</th>
+						<th>Class List</th>
+					</thead>	
                     <tbody>
                     	{stdData?.map((item,index)=>{
                     		return(<tr key={index}>
-                    				<tc>
-		                    			<td>
-		                    				{item.Course}
-		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
-		                    				{item.Delivered_Classes}
-		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
-		                    				{item.Grade}
-		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
-		                    				{item.MaxClasses}
-		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
-		                    				{item.Statuss}
-		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
+									
+		                    			<td align="Center">
 		                    				{item.Student_ID}
 		                    			</td>
-	                    			</tc>
-	                    			<tc>
-		                    			<td>
+	                    			
+	                    			
+		                    			<td align="Center">
 		                    				{item.Student_Name}
 		                    			</td>
-	                    			</tc>
+	                    			
+									
+		                    			<td align="Center">
+		                    				{item.Product_ID}
+		                    			</td>
+	                    			
+		                    			<td align="Center">
+		                    				{item.Course}
+		                    			</td>
+	                    			
+		                    			<td align="Center">
+		                    				{item.Grade}
+		                    			</td>
+	                    			
+		                    			<td align="Center">
+		                    				{item.MaxClasses}
+		                    			</td>
+	                    			
+		                    			<td align="Center">
+		                    				{item.Delivered_Classes}
+		                    			</td>
+										<td align="Center">
+											<button className="btn btn-danger" onClick={()=>handleClick(item.Product_ID,item.Student_ID)}>View Classes</button>
+										</td>	
+	                    			
+	                    			
                     		</tr>)
                     	})}
                     </tbody>
