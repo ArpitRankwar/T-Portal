@@ -9,7 +9,7 @@ const StudentDetails =  ()=> {
     const data={Teacher_ID:TID};
 	
 	const fetchData = React.useCallback(() => {
-		axios.post('http://localhost:8080/StudentDetails',data).then((res)=>{
+		axios.post('https://tportalserverwiingy.herokuapp.com/StudentDetails',data).then((res)=>{
 			console.log(res);
 			setStdData(res.data);
 		}).catch(err => console.log(err));
