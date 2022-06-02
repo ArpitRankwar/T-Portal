@@ -7,18 +7,30 @@ const StudentDetails =  ()=> {
 	const [stdData,setStdData] = React.useState([]);
     var TID=localStorage.getItem('TID');
     const data={Teacher_ID:TID};
-
+	
 	const fetchData = React.useCallback(() => {
-		axios.post('https://tportal-server.herokuapp.com/StudentDetails',data).then((res)=>{
+		axios.post('http://localhost:8080/StudentDetails',data).then((res)=>{
 			console.log(res);
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
-	function handleClick(proid,sid){
+	function handleClick(proid,sid,mclass,dclass){
+		if(mclass-dclass===0){
+			alert("Course Completed Ask for Upgrade");
+		}
+		else if (mclass-dclass<3){
+			alert("Ask Parents to Upgrade");
 		localStorage.setItem('PID',proid);
 		localStorage.setItem('SID',sid);
 		console.log(proid);
 		window.location='/ProductDetails';
+		}
+		else{
+		localStorage.setItem('PID',proid);
+		localStorage.setItem('SID',sid);
+		console.log(proid);
+		window.location='/ProductDetails';
+		}
 	}
 
   	React.useEffect(()=> {
@@ -46,36 +58,36 @@ const StudentDetails =  ()=> {
                     		return(<tr key={index}>
 									
 		                    			<td align="Center">
-		                    				{item.Student_ID}
+		                    				{item.ChildID}
 		                    			</td>
 	                    			
 	                    			
 		                    			<td align="Center">
-		                    				{item.Student_Name}
+		                    				{item.ChildName}
 		                    			</td>
 	                    			
 									
 		                    			<td align="Center">
-		                    				{item.Product_ID}
+		                    				{item.ProductID}
 		                    			</td>
 	                    			
 		                    			<td align="Center">
-		                    				{item.Course}
+		                    				{item.Course_Name}
 		                    			</td>
 	                    			
 		                    			<td align="Center">
-		                    				{item.Grade}
+		                    				{item.ChildGrade}
 		                    			</td>
 	                    			
 		                    			<td align="Center">
-		                    				{item.MaxClasses}
+		                    				{item.Max_Classes}
 		                    			</td>
 	                    			
 		                    			<td align="Center">
 		                    				{item.Delivered_Classes}
 		                    			</td>
 										<td align="Center">
-											<button className="btn btn-danger" onClick={()=>handleClick(item.Product_ID,item.Student_ID)}>View Classes</button>
+											<button className="btn btn-danger" onClick={()=>handleClick(item.ProductID,item.ChildID,item.Max_Classes,item.Delivered_Classes)}>View Classes</button>
 										</td>	
 	                    			
 	                    			
