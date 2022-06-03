@@ -172,6 +172,12 @@ const ProductDetails =  ()=> {
                                             />
 		                    			</td>
 
+										<td align="Center">
+                                        <input type="checkbox" 
+										checked={stdclass.find(({ ClassID }) => ClassID === item.ClassID)? true:false}
+                                        onChange={()=>handleOnChangeCheck(item.ClassID,stdclass.find(({ ClassID }) => ClassID === item.ClassID)? false:true)}/>
+										</td>
+
 		                    			<td align="Center">
 										<input type="checkbox" 
 										checked={stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1 )? true:false}
@@ -189,11 +195,7 @@ const ProductDetails =  ()=> {
                                                 className="textbox"
                                             />
                                         </td>        */}
-										<td align="Center">
-                                        <input type="checkbox" 
-										checked={stdclass.find(({ ClassID }) => ClassID === item.ClassID)? true:false}
-                                        onChange={()=>handleOnChangeCheck(item.ClassID,stdclass.find(({ ClassID }) => ClassID === item.ClassID)? false:true)}/>
-										</td>	
+											
 	                    			
 	                    			
                     		</tr>)
