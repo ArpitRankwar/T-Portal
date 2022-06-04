@@ -134,10 +134,11 @@ const ProductDetails =  ()=> {
 						<th>PPT Link</th>
 						<th>Quiz Link</th>
 						<th>Quiz Score</th>
+						<th>Status</th>
 						<th>Assigment</th>
                         {/* <th>Quiz Score</th>
                         <th>Assigment Score</th> */}
-						<th>Status</th>
+						
 					</thead>	
                     <tbody>
                     	{stdData?.map((item,index)=>{
@@ -154,7 +155,7 @@ const ProductDetails =  ()=> {
 	                    			
 									
 		                    			<td align="Center">
-		                    				<a href={item.PPT_Link}>Link</a>
+		                    				<a href={item.PPT_Link} target="_blank">Link</a>
 		                    			</td>
 	                    			
 		                    			<td align="Center">
