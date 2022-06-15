@@ -89,7 +89,7 @@ const ProductDetails =  ()=> {
 		if(st===false){
 					
 			alert("Not Allowed - Contact Admin to change");
-			window.location = "/ProductDetails";
+			//window.location = "/ProductDetails";
 
 		}
 		if(st===true){
@@ -101,7 +101,7 @@ const ProductDetails =  ()=> {
 				if(st===true){
 					
 					alert("Added Successfully");
-					window.location = "/ProductDetails";
+					//window.location = "/ProductDetails";
 				}
 				
 			} catch (error) {
