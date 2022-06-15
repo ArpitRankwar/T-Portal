@@ -80,7 +80,7 @@ const ProductDetails =  ()=> {
 			"Product_ID":PID,
 			"Student_ID":SID,
 			"Class_ID":Clas,
-			"Date_Time":new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString() ,
+			"Date_Time":new Date().toLocaleString('en-US',{hour12:false}) ,
 			"Teacher_ID":TID,
 			"Quiz_Score":score,
 			"status":st.toString()
