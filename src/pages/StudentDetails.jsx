@@ -10,12 +10,34 @@ const StudentDetails =  ()=> {
 	
 	const fetchData = React.useCallback(() => {
 		axios.post('https://tportalserverwiingy.herokuapp.com/StudentDetails',data).then((res)=>{
-			console.log(res);
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
-	function handleClick(proid,sid,mclass,dclass){
-		if(mclass-dclass===0){
+
+	const handlejoinclass=async(tid,proid,cid)=>{
+		const datatosend={
+			"TeacherID":tid,
+			"ChildID":cid,
+			"CourseID":proid,
+			"Joining_Date":new Date().toLocaleDateString('en-US'),
+			"Joining_Time":new Date().toLocaleTimeString('en-US', {hour12:false})
+		}
+
+		try {
+			const url = "https://tportalserverwiingy.herokuapp.com/meetlog";
+			const { datatosend: res } = await axios.post(url, datatosend);
+			
+		} catch (error) {
+		if (
+			error.response &&
+			error.response.status >= 400 &&
+			error.response.status <= 500
+		) {}
+		}
+	}
+
+	function handleClick(proid,sid,mclass,dclass,cname){
+		if(mclass-dclass===0 || mclass-dclass<0){
 			alert("Course Completed Ask for Upgrade");
 		}
 		else if (mclass-dclass<3){
@@ -28,6 +50,7 @@ const StudentDetails =  ()=> {
 		else{
 		localStorage.setItem('PID',proid);
 		localStorage.setItem('SID',sid);
+		localStorage.setItem('Sname',cname);
 		console.log(proid);
 		window.location='/ProductDetails';
 		}
@@ -51,6 +74,7 @@ const StudentDetails =  ()=> {
 						<th>Grade</th>
 						<th>Max Classes</th>
 						<th>Classes Completed</th>
+						<th>Join Class</th>
 						<th>Class List</th>
 					</thead>	
                     <tbody>
@@ -87,7 +111,11 @@ const StudentDetails =  ()=> {
 		                    				{item.Delivered_Classes}
 		                    			</td>
 										<td align="Center">
-											<button className="btn btn-danger" onClick={()=>handleClick(item.ProductID,item.ChildID,item.Max_Classes,item.Delivered_Classes)}>View Classes</button>
+										<a href={item.MeetLink} target='_blank'><button className="btn btn-danger" onClick={()=>handlejoinclass(TID,item.ChildID,item.ProductID)} type="button"  disabled={item.MeetLink?false:true}>Join Class</button></a>
+									
+										</td>
+										<td align="Center">
+											<button className="btn btn-danger" onClick={()=>handleClick(item.ProductID,item.ChildID,item.Max_Classes,item.Delivered_Classes,item.ChildName)}>View Classes</button>
 										</td>	
 	                    			
 	                    			

@@ -14,7 +14,7 @@ const ProductDetails =  ()=> {
 	var TID=localStorage.getItem('TID');
     const data={Product_ID:PID};
 	const classdata={Student_ID:SID};
-    const [isChecked, setIsChecked] = useState([]);
+    const [dummy, setdummy] = useState(false);
 	const fetchData = React.useCallback(() => {
 		axios.post('https://tportalserverwiingy.herokuapp.com/ProductDetails',data).then((res)=>{
 			
@@ -49,12 +49,8 @@ const ProductDetails =  ()=> {
 				const url = "https://tportalserverwiingy.herokuapp.com/updateassignDetails";
 				const { datatosend: res } = await axios.post(url, datatosend);
 				//window.location = "/"
-				console.log(datatosend);
 				if(st===true){
-					
-					alert("Added Successfully");
-					console.log(res);
-					window.location = "/ProductDetails";
+					setdummy(true);
 				}
 				
 			} catch (error) {
@@ -80,10 +76,11 @@ const ProductDetails =  ()=> {
 			"Product_ID":PID,
 			"Student_ID":SID,
 			"Class_ID":Clas,
-			"Date_Time":new Date().toLocaleString('en-US',{hour12:false}) ,
+			"Date_Time":new Date().toLocaleDateString('en-US') ,
 			"Teacher_ID":TID,
 			"Quiz_Score":score,
-			"status":st.toString()
+			"status":st.toString(),
+			"Entry_Time":new Date().toLocaleTimeString('en-US', {hour12:false})
 		}
 		console.log(datatosend);
 		if(st===false){
@@ -97,10 +94,9 @@ const ProductDetails =  ()=> {
 				const url = "https://tportalserverwiingy.herokuapp.com/updateDetails";
 				const { datatosend: res } = await axios.post(url, datatosend);
 				//window.location = "/"
-				console.log(datatosend);
 				if(st===true){
-					
-					alert("Added Successfully");
+					setdummy(true);
+
 					//window.location = "/ProductDetails";
 				}
 				
@@ -119,14 +115,15 @@ const ProductDetails =  ()=> {
   	},[fetchData])
 	  React.useEffect(()=> {
 		fetchclass();
+		setdummy(false);
 		console.log(stdData);
-	},[fetchclass])
+	},[fetchclass,setdummy,dummy])
       return(
       <div classname="container">
 		  <nav className={styles.navbar}>
-        <h1>Wiingy</h1>
+        <h1 >Wiingy</h1>
       </nav>
-	  <br></br>
+			<h4>{localStorage.getItem('Sname')}</h4>
                 <table className="table table-striped">
 					<thead align="center">
 						<th>Class_ID</th>
@@ -155,11 +152,11 @@ const ProductDetails =  ()=> {
 	                    			
 									
 		                    			<td align="Center">
-		                    				<a href={item.PPT_Link} target="_blank">Link</a>
+		                    				<a href={item.PPT_Link} target="_blank"><button className="btn btn-danger" type="button"  disabled={item.PPT_Link?false:true}>PPT</button></a>
 		                    			</td>
 	                    			
 		                    			<td align="Center">
-                                        <a href={item.Quiz_Link}>Link</a>
+                                        <a href={item.Quiz_Link} target="_blank"><button className="btn btn-danger" type="button"  disabled={item.Quiz_Link?false:true}>Quiz</button></a>
 		                    			</td>
 
 										<td align="Center">
@@ -182,7 +179,7 @@ const ProductDetails =  ()=> {
 		                    			<td align="Center">
 										<input type="checkbox" 
 										checked={stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1 )? true:false}
-                                        onChange={()=>handleOnChangeassignCheck(item.ClassID,stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1)? false:true)}/>
+                                        onChange={(e)=>handleOnChangeassignCheck(item.ClassID,stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1)? false:true)}/>
 		                    			</td>
                                         {/* <td align="Center">
                                             <input

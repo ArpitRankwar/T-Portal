@@ -3,13 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@mui/material": "^5.8.5",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "axios": "^0.27.2",
     "cra-template": "1.2.0",
+    "fa-icons": "^0.2.0",
     "react": "^18.1.0",
     "react-alert": "^7.0.3",
     "react-dom": "^18.1.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "typescript": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
