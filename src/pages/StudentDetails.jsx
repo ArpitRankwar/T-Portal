@@ -9,7 +9,7 @@ const StudentDetails =  ()=> {
     const data={Teacher_ID:TID};
 	
 	const fetchData = React.useCallback(() => {
-		axios.post('https://tportalserverwiingy.herokuapp.com/StudentDetails',data).then((res)=>{
+		axios.post('/studentdetails',data).then((res)=>{
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
@@ -24,7 +24,7 @@ const StudentDetails =  ()=> {
 		}
 
 		try {
-			const url = "https://tportalserverwiingy.herokuapp.com/meetlog";
+			const url = "/joinclasslog";
 			const { datatosend: res } = await axios.post(url, datatosend);
 			
 		} catch (error) {
@@ -36,22 +36,34 @@ const StudentDetails =  ()=> {
 		}
 	}
 
-	function handleClick(proid,sid,mclass,dclass,cname){
+	const handleClick =async(proid,sid,mclass,dclass,cname)=>{
 		if(mclass-dclass===0 || mclass-dclass<0){
 			alert("Course Completed Ask for Upgrade");
+			localStorage.setItem('Sname',cname);
 		}
 		else if (mclass-dclass<3){
 			alert("Ask Parents to Upgrade");
-		localStorage.setItem('PID',proid);
-		localStorage.setItem('SID',sid);
-		console.log(proid);
-		window.location='/ProductDetails';
-		}
-		else{
+			const datatosend={'Student_ID':sid};
+			const url = "/fetchchannelid";
+			axios.post(url, datatosend).then((res)=>{
+			localStorage.setItem('Channel_ID',res.data[0].Channel_ID);
+			})
 		localStorage.setItem('PID',proid);
 		localStorage.setItem('SID',sid);
 		localStorage.setItem('Sname',cname);
 		console.log(proid);
+		window.location='/ProductDetails';
+		}
+		else{
+			const datatosend={'Student_ID':sid};
+			const url = "/fetchchannelid";
+			axios.post(url, datatosend).then((res)=>{
+			localStorage.setItem('Channel_ID',res.data[0].Channel_ID);
+			})
+			
+		localStorage.setItem('PID',proid);
+		localStorage.setItem('SID',sid);
+		localStorage.setItem('Sname',cname);
 		window.location='/ProductDetails';
 		}
 	}

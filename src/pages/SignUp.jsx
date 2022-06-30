@@ -16,7 +16,7 @@ const SignUp = () => {
     e.preventDefault();
     console.log(data);
     try {
-          const url = "https://tportalserverwiingy.herokuapp.com/SignUp";
+          const url = "/SignUp";
           const { data: res } = await axios.post(url, data);
           window.location = "/"
           console.log(res);

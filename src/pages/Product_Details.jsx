@@ -6,7 +6,7 @@ import "./productdetail.css";
 import { withAlert } from 'react-alert'
 
 const ProductDetails =  ()=> {  
-	const [val, setVal] = useState();  
+	const [val, setVal] = useState(0);  
 	const [stdData,setStdData] = React.useState([]);
 	const [stdclass,setClassData] = React.useState([]);
     var PID=localStorage.getItem('PID');
@@ -16,13 +16,13 @@ const ProductDetails =  ()=> {
 	const classdata={Student_ID:SID};
     const [dummy, setdummy] = useState(false);
 	const fetchData = React.useCallback(() => {
-		axios.post('https://tportalserverwiingy.herokuapp.com/ProductDetails',data).then((res)=>{
+		axios.post('/productdetails',data).then((res)=>{
 			
 			setStdData(res.data);
 		}).catch(err => console.log(err));
 	},[])
 	const fetchclass = React.useCallback(() => {
-		axios.post('https://tportalserverwiingy.herokuapp.com/extractclass',classdata).then((res)=>{
+		axios.post('/completedclass',classdata).then((res)=>{
 			
 			setClassData(res.data);
 
@@ -32,10 +32,12 @@ const ProductDetails =  ()=> {
 	const handleOnChangeassignCheck=async(Clas,stat)=>{
 		var st;
 		st=stat;
+		let Assignment_Link=val;
 		const datatosend={
 			"Product_ID":PID,
 			"Student_ID":SID,
 			"Class_ID":Clas,
+			"Assignment_Link":Assignment_Link,
 			"status":st.toString()
 		}
 		if(st===false){
@@ -46,7 +48,7 @@ const ProductDetails =  ()=> {
 		}
 		if(st===true){
 			try {
-				const url = "https://tportalserverwiingy.herokuapp.com/updateassignDetails";
+				const url = "/assignmentdetails";
 				const { datatosend: res } = await axios.post(url, datatosend);
 				//window.location = "/"
 				if(st===true){
@@ -63,13 +65,20 @@ const ProductDetails =  ()=> {
 		}
 	}
 
+	const handlechannelid=async()=>{
+		let Channel_ID=val;
+		const datatosend={
+			"Channel_ID":Channel_ID,
+			"Student_ID":SID
+		}
+		const url = "/updatechannelid";
+		const { datatosend: res } = await axios.post(url, datatosend);
+	}
+
     const handleOnChangeCheck=async(Clas,stat)=>{
 		var st;
-		var score=val;
+		let score=val;
 		console.log(score);
-		if(stdclass.find(({ Student_ID }) => Student_ID === SID)){
-			console.log("dddds");
-		}
 		st=stat;
 		
 		const datatosend={
@@ -82,22 +91,21 @@ const ProductDetails =  ()=> {
 			"status":st.toString(),
 			"Entry_Time":new Date().toLocaleTimeString('en-US', {hour12:false})
 		}
-		console.log(datatosend);
 		if(st===false){
 					
 			alert("Not Allowed - Contact Admin to change");
-			//window.location = "/ProductDetails";
 
 		}
 		if(st===true){
 			try {
-				const url = "https://tportalserverwiingy.herokuapp.com/updateDetails";
+				const url = "/studentclasses";
 				const { datatosend: res } = await axios.post(url, datatosend);
 				//window.location = "/"
 				if(st===true){
 					setdummy(true);
-
-					//window.location = "/ProductDetails";
+					console.log("working");
+					const url= "/notification"
+					const { datatosend: res } = await axios.post(url, datatosend);
 				}
 				
 			} catch (error) {
@@ -116,12 +124,19 @@ const ProductDetails =  ()=> {
 	  React.useEffect(()=> {
 		fetchclass();
 		setdummy(false);
-		console.log(stdData);
 	},[fetchclass,setdummy,dummy])
       return(
       <div classname="container">
-		  <nav className={styles.navbar}>
+		<nav className={styles.navbar}>
         <h1 >Wiingy</h1>
+		<input 
+			style={{"margin-left":"50%"}}
+			type="text"
+			placeholder="ChannelID"
+			onChange={(e) => setVal(e.target.value)}
+			defaultValue={localStorage.getItem('Channel_ID')}
+		/>
+		<button style={{"margin-right":"20%","border-radius":"2rem"}} onClick={handlechannelid}>Update</button>
       </nav>
 			<h4>{localStorage.getItem('Sname')}</h4>
                 <table className="table table-striped">
@@ -176,11 +191,24 @@ const ProductDetails =  ()=> {
                                         onChange={()=>handleOnChangeCheck(item.ClassID,stdclass.find(({ ClassID }) => ClassID === item.ClassID)? false:true)}/>
 										</td>
 
-		                    			<td align="Center">
-										<input type="checkbox" 
+										<td align="Center">
+                                            <input  
+                                                placeholder="Project Link"
+                                                className="textbox"
+												style={{width: "60%"}}
+												disabled={stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1 )? true:false}
+												onChange={(e) => setVal(e.target.value)}
+												defaultValue={  stdclass.filter((stdItem) => stdItem.ClassID === item.ClassID)[0]?.Assignment_Link  }
+										
+                                            />
+											<input type="checkbox" 
+											style={{"margin-left":"15%"}}
 										checked={stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1 )? true:false}
                                         onChange={(e)=>handleOnChangeassignCheck(item.ClassID,stdclass.find(({ ClassID,Assignment_Status }) => ClassID === item.ClassID && Assignment_Status===1)? false:true)}/>
-		                    			</td>
+		                    			
+                                        </td>
+		                    			{/* <td align="Center">
+										</td> */}
                                         {/* <td align="Center">
                                             <input
                                                 placeholder="Score"

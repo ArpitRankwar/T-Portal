@@ -16,7 +16,7 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log(data);
-      const url = "https://tportalserverwiingy.herokuapp.com/LogIn";
+      const url = "/login";
       const { data: res } = await axios.post(url, data);
       window.location='/StudentDetails';
       localStorage.setItem('TID',res[0].Teacher_ID);
