@@ -13,20 +13,25 @@ const ProductDetails =  ()=> {
 	var SID=localStorage.getItem('SID');
 	var TID=localStorage.getItem('TID');
     const data={Product_ID:PID};
-	const classdata={Student_ID:SID};
+	const classdata={Student_ID:SID,Product_ID:PID};
     const [dummy, setdummy] = useState(false);
 	const fetchData = React.useCallback(() => {
 		axios.post('/productdetails',data).then((res)=>{
 			
 			setStdData(res.data);
 		}).catch(err => console.log(err));
-	},[])
+	},[]);
+	
+	const [classFetchLoading,setClassFetchLoading] = React.useState(false);
 	const fetchclass = React.useCallback(() => {
+		setClassFetchLoading(true);
+		console.log("erere")
 		axios.post('/completedclass',classdata).then((res)=>{
 			
 			setClassData(res.data);
+		setClassFetchLoading(false)
 
-		}).catch(err => console.log(err));
+		}).catch(err => {setClassFetchLoading(false); console.log(err)});
 	},[])
 
 	const handleOnChangeassignCheck=async(Clas,stat)=>{
@@ -122,8 +127,11 @@ const ProductDetails =  ()=> {
   		fetchData();
   	},[fetchData])
 	  React.useEffect(()=> {
-		fetchclass();
-		setdummy(false);
+		if(!classFetchLoading){
+			fetchclass();
+		}
+		if(dummy === true)
+			setdummy(false);
 	},[fetchclass,setdummy,dummy])
       return(
       <div classname="container">

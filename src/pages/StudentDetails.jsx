@@ -72,7 +72,7 @@ const StudentDetails =  ()=> {
   		fetchData();
   	},[fetchData])
       return(
-      <div classname="container">
+      <div >
 		  <nav className={styles.navbar}>
         <h1>Wiingy</h1>
       </nav>
@@ -123,7 +123,7 @@ const StudentDetails =  ()=> {
 		                    				{item.Delivered_Classes}
 		                    			</td>
 										<td align="Center">
-										<a href={item.MeetLink} target='_blank'><button className="btn btn-danger" onClick={()=>handlejoinclass(TID,item.ChildID,item.ProductID)} type="button"  disabled={item.MeetLink?false:true}>Join Class</button></a>
+										<a href={item.MeetLINK} target='_blank'><button className="btn btn-danger" onClick={()=>handlejoinclass(TID,item.ChildID,item.ProductID)} type="button"  disabled={item.MeetLINK?false:true}>Join Class</button></a>
 									
 										</td>
 										<td align="Center">

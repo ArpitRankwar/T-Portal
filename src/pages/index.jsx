@@ -21,11 +21,7 @@ const Login = () => {
       window.location='/StudentDetails';
       localStorage.setItem('TID',res[0].Teacher_ID);
     } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
+      if ((error.response) && ((error.response.status >= 400) && (error.response.status <= 500))) {
         setError(error.response.data.message);
       }
     }
@@ -58,7 +54,7 @@ const Login = () => {
                 required
                 className={styles.input}
               />
-              {error && <div className={styles.error_msg}>{error}</div>}
+              {error && (<div className={styles.error_msg}>{error}</div>)}
               <button type="submit" className={styles.green_btn}>
                 Sign In
               </button>
