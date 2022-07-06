@@ -51,7 +51,6 @@ const StudentDetails =  ()=> {
 		localStorage.setItem('PID',proid);
 		localStorage.setItem('SID',sid);
 		localStorage.setItem('Sname',cname);
-		console.log(proid);
 		window.location='/ProductDetails';
 		}
 		else{

@@ -25,7 +25,6 @@ const ProductDetails =  ()=> {
 	const [classFetchLoading,setClassFetchLoading] = React.useState(false);
 	const fetchclass = React.useCallback(() => {
 		setClassFetchLoading(true);
-		console.log("erere")
 		axios.post('/completedclass',classdata).then((res)=>{
 			
 			setClassData(res.data);
@@ -38,6 +37,10 @@ const ProductDetails =  ()=> {
 		var st;
 		st=stat;
 		let Assignment_Link=val;
+		if(Assignment_Link.search("https://")==-1){
+			alert("Not able to find the video on youtube")
+		}
+		else{
 		const datatosend={
 			"Product_ID":PID,
 			"Student_ID":SID,
@@ -69,6 +72,7 @@ const ProductDetails =  ()=> {
 			}
 		}
 	}
+	}
 
 	const handlechannelid=async()=>{
 		let Channel_ID=val;
@@ -80,12 +84,14 @@ const ProductDetails =  ()=> {
 		const { datatosend: res } = await axios.post(url, datatosend);
 	}
 
-    const handleOnChangeCheck=async(Clas,stat)=>{
+    const handleOnChangeCheck=async(Clas,maxscore,stat)=>{
 		var st;
 		let score=val;
-		console.log(score);
 		st=stat;
-		
+		if(score>maxscore){
+			alert(`Quiz Score should less than ${maxscore}`)
+		}
+		else{
 		const datatosend={
 			"Product_ID":PID,
 			"Student_ID":SID,
@@ -108,7 +114,6 @@ const ProductDetails =  ()=> {
 				//window.location = "/"
 				if(st===true){
 					setdummy(true);
-					console.log("working");
 					const url= "/notification"
 					const { datatosend: res } = await axios.post(url, datatosend);
 				}
@@ -121,6 +126,7 @@ const ProductDetails =  ()=> {
 			) {}
 			}
 		}	
+	}
     }
 
   	React.useEffect(()=> {
@@ -196,7 +202,7 @@ const ProductDetails =  ()=> {
 										<td align="Center">
                                         <input type="checkbox" 
 										checked={stdclass.find(({ ClassID }) => ClassID === item.ClassID)? true:false}
-                                        onChange={()=>handleOnChangeCheck(item.ClassID,stdclass.find(({ ClassID }) => ClassID === item.ClassID)? false:true)}/>
+                                        onChange={()=>handleOnChangeCheck(item.ClassID,item.Max_quiz_Score,stdclass.find(({ ClassID }) => ClassID === item.ClassID)? false:true)}/>
 										</td>
 
 										<td align="Center">

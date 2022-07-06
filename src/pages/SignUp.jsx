@@ -14,12 +14,10 @@ const SignUp = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
     try {
           const url = "/SignUp";
           const { data: res } = await axios.post(url, data);
           window.location = "/"
-          console.log(res);
     } catch (error) {
       if (
         error.response &&
