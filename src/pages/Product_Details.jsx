@@ -37,7 +37,8 @@ const ProductDetails =  ()=> {
 		var st;
 		st=stat;
 		let Assignment_Link=val;
-		if(Assignment_Link.search("https://")==-1){
+
+		if(Assignment_Link.search("https://www.youtube.com/watch?")==-1){
 			alert("Not able to find the video on youtube")
 		}
 		else{
