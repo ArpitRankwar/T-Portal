@@ -15,7 +15,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(data);
       const url = "/login";
       const { data: res } = await axios.post(url, data);
       window.location='/StudentDetails';

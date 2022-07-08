@@ -16,9 +16,11 @@ const ProductDetails =  ()=> {
 	const classdata={Student_ID:SID,Product_ID:PID};
     const [dummy, setdummy] = useState(false);
 	const fetchData = React.useCallback(() => {
+		console.log(data);
 		axios.post('/productdetails',data).then((res)=>{
-			
+			console.log(res.data);
 			setStdData(res.data);
+			console.log(stdData)
 		}).catch(err => console.log(err));
 	},[]);
 	
@@ -140,6 +142,7 @@ const ProductDetails =  ()=> {
 		if(dummy === true)
 			setdummy(false);
 	},[fetchclass,setdummy,dummy])
+	
       return(
       <div classname="container">
 		<nav className={styles.navbar}>

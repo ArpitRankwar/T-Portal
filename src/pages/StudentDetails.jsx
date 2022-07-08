@@ -74,6 +74,7 @@ const StudentDetails =  ()=> {
       <div >
 		  <nav className={styles.navbar}>
         <h1>Wiingy</h1>
+		<button onClick={()=>window.open('https://forms.gle/nxZPHNhX5BumzGta7')}>Help</button>
       </nav>
 	  <br></br>
                 <table className="table table-striped">
