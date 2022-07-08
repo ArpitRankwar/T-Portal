@@ -20,7 +20,6 @@ const ProductDetails =  ()=> {
 		axios.post('/productdetails',data).then((res)=>{
 			console.log(res.data);
 			setStdData(res.data);
-			console.log(stdData)
 		}).catch(err => console.log(err));
 	},[]);
 	
