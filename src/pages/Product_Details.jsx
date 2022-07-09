@@ -38,8 +38,8 @@ const ProductDetails =  ()=> {
 		var st;
 		st=stat;
 		let Assignment_Link=val;
-
-		if(Assignment_Link.search("https://www.youtube.com/watch?")==-1){
+		
+		if(Assignment_Link.search("https://")==-1){
 			alert("Not able to find the video on youtube")
 		}
 		else{
@@ -58,6 +58,7 @@ const ProductDetails =  ()=> {
 		}
 		if(st===true){
 			try {
+				console.log(datatosend)
 				const url = "/assignmentdetails";
 				const { datatosend: res } = await axios.post(url, datatosend);
 				//window.location = "/"
